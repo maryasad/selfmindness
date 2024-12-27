@@ -1,18 +1,24 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
+import path from 'path'
 
 // https://vitejs.dev/config/
 export default defineConfig({
   base: '/selfmindness/',
   plugins: [react()],
-  server: {
-    port: 3002 // Using port 3002 since 3000 and 3001 are taken
+  resolve: {
+    alias: {
+      '@': path.resolve(__dirname, './src'),
+    },
   },
   build: {
     outDir: 'dist',
     assetsDir: 'assets',
     sourcemap: true,
     rollupOptions: {
+      input: {
+        main: path.resolve(__dirname, 'index.html'),
+      },
       output: {
         manualChunks: undefined,
         entryFileNames: 'assets/[name].[hash].js',
@@ -20,5 +26,8 @@ export default defineConfig({
         assetFileNames: 'assets/[name].[hash][extname]'
       }
     }
+  },
+  server: {
+    port: 3002
   }
 })
